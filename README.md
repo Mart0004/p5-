@@ -70,8 +70,8 @@ Tambien incluye de 2 funciones subprograma para hacer la funcionalidad del escá
  En esta funcionalidad se realiza el escaneo del bus *I2C*. Se itera a través de todas las direcciones de 7 bits posibles (de 1 a 127) y se intenta iniciar una comunicación con cada dirección mediante *Wire.beginTransmission(address)*. 
  
  Si no hay error (error == 0), significa que hay un dispositivo en esa dirección y se imprime su dirección (hexadecimal) en el puerto serie. 
- 
  Si hay un error (error == 4), se imprime un mensaje indicando que hubo un error desconocido.
+ 
 Después de escanear todas las direcciones, se verifica si se encontraron dispositivos. Si no encuentra ningun dispositivo, se imprime un mensaje diciendolo. Luego, se espera 5 segundos antes de comenzar el próximo escaneo.
   
 ### Salida por el puerto serie:
@@ -84,12 +84,14 @@ I2C device found at address 0x3F !
 I2C device found at address 0x68 !
 done
 ```
+
 Y si no se encuentran dispositivos conectados en el bus *I2C*:
 ```
 I2C Scanner
 Scanning...
 No I2C devices found
 ```
+
 Diagrama sobre el funcionamiento:
 ```mermaid
 graph TD;
@@ -99,7 +101,7 @@ graph TD;
     D --> E[Iterar sobre las direcciones I2C];
     E --> F{¿Dirección válida?};
     F -->|Sí| G[Enviar solicitud de transmisión];
-    F -->|No| H[Registrar error desconocido];
+    F -->|No| H[Error desconocido];
     G --> I{¿Error igual a 0?};
     I -->|Sí| J[Registrar dispositivo encontrado];
     I -->|No| K[Registrar error desconocido];
@@ -116,7 +118,6 @@ graph TD;
 ```
 
 ## EJERCICIO PARTE 2: SENSOR TEMPERATURA Y HUMEDAD
-
 ```c++
 #include <Arduino.h>
     #include <Wire.h>
@@ -166,19 +167,18 @@ graph TD;
     lcd.print("%");
     }
 ```
+
 ### Funcionamiento y salida por la terminal 
 Este código está diseñado para un aparato que usa un sensor llamado AHT10 para detectar la temperatura y la humedad. Después, presenta esta información en dos lugares diferentes: en un programa de computadora que muestra datos en tiempo real (el monitor serial) y en una pantalla física que puedes ver directamente (el display LCD).
 
 #### Funcionalidades
 
-En el setup(), se inicializa la comunicación serial, I2C y el display LCD, y se verifica si el sensor AHT10 está funcionando correctamente.
-
+En el setup(), se inicializa la comunicación serial, *I2C* y el display LCD, y se verifica si el sensor AHT10 está funcionando correctamente.
 En el loop(), se lee la temperatura y la humedad cada 2 segundos, se imprimen estos valores en el monitor serial y se muestran en el display LCD.
 
 ### Salida por el puerto serie:
 
 La salida son la temperatura y humedad captada.
-
 Un ejemplo de la salida por el puerto serie:
 
 ```
@@ -188,4 +188,4 @@ Temperatura: 22.99 °C   Humedad: 55.78%
 ```
 
 ### Fotografías
-![Montaje](https://github.com/XaviFdez/Practica5/assets/160432677/c8eccce3-6546-4a63-b30f-61491ef1ed93)
+![Montaje](https://github.com/Marti402/Practica5/blob/main/Ilustracio.jpg)
